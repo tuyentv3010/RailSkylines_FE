@@ -31,7 +31,7 @@ export default function QRCodeTicket({
 
     QRCode.toCanvas(
       virtualCanvas,
-      `http://localhost:3000/ticket?ticketCode=${ticketCode}`,
+      `https://railskylines-fe-4.onrender.com/ticket?ticketCode=${ticketCode}`,
       { width },
       function (error: any) {
         if (error) console.error(error);

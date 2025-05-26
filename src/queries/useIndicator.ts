@@ -1,27 +1,3 @@
-// import indicatorApiRequest from "@/apiRequests/indicator";
-// import {
-//   DashboardIndicatorQueryParamsType,
-//   DashboardIndicatorResType,
-// } from "@/schemaValidations/indicator.schema";
-// import { useQuery, useQueryClient } from "@tanstack/react-query";
-
-// export const useGetDashboardIndicator = ({
-//   queryParams,
-//   enabled = true,
-// }: {
-//   queryParams: DashboardIndicatorQueryParamsType;
-//   enabled?: boolean;
-// }) => {
-//   return useQuery({
-//     queryKey: ["dashboardIndicators", queryParams],
-//     queryFn: () => indicatorApiRequest.getDashboardIndicator(queryParams),
-//     enabled, // Allow disabling the query if needed
-//     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-//     gcTime: 10 * 60 * 1000, // Garbage collection time
-//     retry: 2, // Retry failed requests twice
-//   });
-// };
-
 import indicatorApiRequest from "@/apiRequests/indicator";
 import {
   DashboardIndicatorQueryParamsType,

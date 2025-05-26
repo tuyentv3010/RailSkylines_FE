@@ -324,28 +324,6 @@ export function RoleDialog({
                   {paginationT("Pagi3")}
                 </div>
                 <div className="flex items-center gap-2">
-                  {/* will fix in the future */}
-                  {/* <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => goToPage(page - 1)}
-                    disabled={page <= 1}
-                  >
-                    {paginationT("Previous")}
-                  </Button>
-                  <span>
-                    {paginationT("Page")} {page} {paginationT("Of")}{" "}
-                    {totalPages}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => goToPage(page + 1)}
-                    disabled={page >= totalPages}
-                  >
-                    {paginationT("Next")}
-                  </Button> */}
-                  {/* will fix in the future */}
                   <Select
                     value={pageSize.toString()}
                     onValueChange={(value) => {
