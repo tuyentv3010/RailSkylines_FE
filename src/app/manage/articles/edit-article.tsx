@@ -32,6 +32,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Label } from "recharts";
 import { Editor } from "@tinymce/tinymce-react";
+import socketManager from "@/lib/socket";
 
 type EditArticleProps = {
   id: number;
@@ -81,7 +82,20 @@ export default function EditArticle({
 
   const onSubmit = async (data: UpdateArticleBodyType) => {
     try {
-      await updateArticleMutation.mutateAsync({ id: articleId, ...data });
+      const result = await updateArticleMutation.mutateAsync({ id: articleId, ...data });
+
+      // Emit real-time event sau khi cập nhật thành công
+      if (socketManager.isSocketConnected()) {
+        socketManager.emit("articleUpdated", {
+          id: articleId,
+          ...data,
+          author: {
+            id: "current-user-id", // Sẽ được server xử lý
+            name: "current-user-name" // Sẽ được server xử lý
+          }
+        });
+      }
+
       toast({
         title: t("UpdateSuccess"),
         description: t("ArticleUpdated", { title: data.title }),

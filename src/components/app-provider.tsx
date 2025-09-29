@@ -5,6 +5,8 @@ import { getAccessTokenFromLocalStorage, decodeToken } from "@/lib/utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import RefreshToken from "@/components/refresh-token";
+import { SocketProvider } from "@/providers/SocketProvider";
+import { GlobalRealtimeListener } from "@/components/GlobalRealtimeListener";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,9 +54,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       value={{ isAuth, setIsAuth, role, setRole, permissions, setPermissions }}
     >
       <QueryClientProvider client={queryClient}>
-        {children}
-        <RefreshToken />
-        <ReactQueryDevtools initialIsOpen={false} />
+        <SocketProvider>
+          {children}
+          <GlobalRealtimeListener />
+          <RefreshToken />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </SocketProvider>
       </QueryClientProvider>
     </AppContext.Provider>
   );

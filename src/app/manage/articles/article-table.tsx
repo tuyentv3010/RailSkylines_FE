@@ -3,7 +3,6 @@
 import {
   CaretSortIcon,
   DotsHorizontalIcon,
-  PlusCircledIcon,
 } from "@radix-ui/react-icons";
 import {
   ColumnDef,

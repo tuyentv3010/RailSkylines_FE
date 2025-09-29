@@ -50,7 +50,6 @@ export const useSearchBookingQuery = (
     enabled: !!bookingCode && !!vnpTxnRef,
   });
 };
-
 export const useSearchTicketQuery = (ticketCode: string, citizenId: string) => {
   return useQuery({
     queryKey: ["ticket", ticketCode, citizenId],

@@ -80,7 +80,6 @@ export default function LoginForm() {
         localStorage.setItem("refreshToken", "");
         return;
       }
-
       // If status is 1, proceed with login
       localStorage.setItem("accessToken", result.payload.data.access_token);
       setIsAuth(true);

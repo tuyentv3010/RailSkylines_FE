@@ -1,14 +1,6 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
-import {
-  CreateEmployeeAccountBody,
-  CreateEmployeeAccountBodyType,
-} from "@/schemaValidations/account.schema";
-import { useMemo, useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { title } from "process";
-import LexicalEditor from "@/app/manage/LexicalEditor";
 import { Editor } from "@tinymce/tinymce-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +13,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -32,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { PlusCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
@@ -41,6 +32,7 @@ import {
 } from "@/schemaValidations/article.schema";
 import { useToast } from "@/components/ui/use-toast";
 import { useAddArticleMutation } from "@/queries/useArticle";
+import socketManager from "@/lib/socket";
 
 export default function AddArticle() {
   const t = useTranslations("ManageArticle");
@@ -59,7 +51,19 @@ export default function AddArticle() {
 
   const onSubmit = async (data: CreateArticleBodyType) => {
     try {
-      await addArticleMutation.mutateAsync(data);
+      const result = await addArticleMutation.mutateAsync(data);
+
+      // Emit real-time event sau khi tạo thành công
+      if (socketManager.isSocketConnected()) {
+        socketManager.emit("articleCreated", {
+          ...result,
+          author: {
+            id: "current-user-id", // Sẽ được server xử lý
+            name: "current-user-name", // Sẽ được server xử lý
+          },
+        });
+      }
+
       toast({
         title: t("AddSuccess"),
         description: t("ArticleAdded", { title: data.title }),
@@ -67,6 +71,7 @@ export default function AddArticle() {
       setOpen(false);
       form.reset();
     } catch (error) {
+      console.error("Error adding article:", error);
       toast({
         title: t("AddFailed"),
         description: t("Error_Generic"),
