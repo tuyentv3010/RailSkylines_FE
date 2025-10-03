@@ -24,10 +24,17 @@ export const ArticleSchema = z.object({
   articleId: z.number(),
   title: z.string(),
   content: z.string(),
-  thumbnail: z.string().optional(),
-  userId: z.number(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional(),
+  thumbnail: z.string().nullish(),
+  userId: z.number().optional(),
+  user: z
+    .object({
+      userId: z.number(),
+      fullName: z.string().optional(),
+      email: z.string().optional(),
+    })
+    .optional(),
+  createdAt: z.string().nullish(),
+  updatedAt: z.string().nullish(),
 });
 
 export type ArticleSchemaType = z.TypeOf<typeof ArticleSchema>;
@@ -38,7 +45,7 @@ export const ArticleRes = z.object({
   statusCode: z.number(),
   error: z.string().nullable(),
   message: z.string(),
-  data: ArticleSchema,
+  data: ArticleSchema.nullable(),
 });
 
 export type ArticleResType = z.TypeOf<typeof ArticleRes>;

@@ -32,7 +32,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Label } from "recharts";
 import { Editor } from "@tinymce/tinymce-react";
-import socketManager from "@/lib/socket";
+// Socket removed: using backend-triggered Pusher events
 
 type EditArticleProps = {
   id: number;
@@ -82,19 +82,7 @@ export default function EditArticle({
 
   const onSubmit = async (data: UpdateArticleBodyType) => {
     try {
-      const result = await updateArticleMutation.mutateAsync({ id: articleId, ...data });
-
-      // Emit real-time event sau khi cập nhật thành công
-      if (socketManager.isSocketConnected()) {
-        socketManager.emit("articleUpdated", {
-          id: articleId,
-          ...data,
-          author: {
-            id: "current-user-id", // Sẽ được server xử lý
-            name: "current-user-name" // Sẽ được server xử lý
-          }
-        });
-      }
+      await updateArticleMutation.mutateAsync({ id: articleId, ...data });
 
       toast({
         title: t("UpdateSuccess"),

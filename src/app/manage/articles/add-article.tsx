@@ -32,7 +32,7 @@ import {
 } from "@/schemaValidations/article.schema";
 import { useToast } from "@/components/ui/use-toast";
 import { useAddArticleMutation } from "@/queries/useArticle";
-import socketManager from "@/lib/socket";
+// Socket removed: using backend-triggered Pusher events
 
 export default function AddArticle() {
   const t = useTranslations("ManageArticle");
@@ -51,18 +51,7 @@ export default function AddArticle() {
 
   const onSubmit = async (data: CreateArticleBodyType) => {
     try {
-      const result = await addArticleMutation.mutateAsync(data);
-
-      // Emit real-time event sau khi tạo thành công
-      if (socketManager.isSocketConnected()) {
-        socketManager.emit("articleCreated", {
-          ...result,
-          author: {
-            id: "current-user-id", // Sẽ được server xử lý
-            name: "current-user-name", // Sẽ được server xử lý
-          },
-        });
-      }
+      await addArticleMutation.mutateAsync(data);
 
       toast({
         title: t("AddSuccess"),

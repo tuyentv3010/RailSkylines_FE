@@ -169,14 +169,16 @@ const request = async <Response>(
     let payload: any;
 
     if (contentType.includes("application/json")) {
-      payload = await res.json();
+      // Handle empty JSON bodies gracefully (e.g., 204 No Content or empty body with JSON content-type)
+      const textBody = await res.text();
+      payload = textBody ? JSON.parse(textBody) : null;
     } else {
       payload = await res.text();
       // Attempt to extract error message from HTML
       const messageMatch = payload.match(/<p><b>Message<\/b> (.*?)<\/p>/);
       const extractedMessage = messageMatch
         ? messageMatch[1]
-        : payload.slice(0, 100) + "...";
+        : (typeof payload === 'string' ? payload.slice(0, 100) + "..." : "");
       if (!res.ok) {
         throw new HttpError({
           status: res.status,
@@ -245,9 +247,9 @@ const request = async <Response>(
           message = "Bạn không có quyền truy cập endpoint này.";
         } else if (
           contentType.includes("application/json") &&
-          payload.message
+          payload && (payload as any).message
         ) {
-          message = payload.message;
+          message = (payload as any).message;
         }
         throw new ForbiddenError({
           status: FORBIDDEN_ERROR_STATUS,
@@ -256,8 +258,10 @@ const request = async <Response>(
         });
       } else {
         let message = contentType.includes("application/json")
-          ? payload.message || "Lỗi HTTP"
-          : `Non-JSON response: ${payload.slice(0, 100)}...`;
+          ? (payload?.message || "Lỗi HTTP")
+          : `Non-JSON response: ${
+              typeof payload === 'string' ? payload.slice(0, 100) + '...' : ''
+            }`;
         if (
           typeof payload === "string" &&
           payload.includes("PermissionException")
