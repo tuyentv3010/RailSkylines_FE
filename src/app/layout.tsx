@@ -9,6 +9,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import NextTopLoader from "nextjs-toploader";
 import Footer from "@/components/footer";
+import ChatbotWidget from "@/components/chatbot/ChatbotWidget";
 import { baseOpenGraph } from "@/shared-metadata";
 import GoogleTag from "@/components/google-tag";
 import { AppProvider } from "@/components/app-provider";
@@ -55,6 +56,7 @@ export default async function RootLayout({
               disableTransitionOnChange
             >
               {children}
+              <ChatbotWidget />
               <Footer />
               <Toaster />
             </ThemeProvider>
@@ -65,3 +67,5 @@ export default async function RootLayout({
     </html>
   );
 }
+
+

@@ -68,6 +68,11 @@
     "description": "Chi tiết Savannah",
     "notFound": "Món ăn không tìm thấy"
   },
+  "ArticleDetail": {
+    "title": "Bài viết",
+    "description": "Chi tiết bài viết",
+    "notFound": "Không tìm thấy bài viết"
+  },
   "ErrorMessage": {
     "invalidEmail": "Email không hợp lệ",
     "required": "Trường này là bắt buộc",

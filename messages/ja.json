@@ -68,6 +68,11 @@
     "description": "サバンナの詳細",
     "notFound": "料理が見つかりません"
   },
+  "ArticleDetail": {
+    "title": "記事",
+    "description": "記事の詳細",
+    "notFound": "記事が見つかりません"
+  },
   "ErrorMessage": {
     "invalidEmail": "無効なメールアドレス",
     "required": "このフィールドは必須です",

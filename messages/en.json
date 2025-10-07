@@ -68,6 +68,11 @@
     "description": "Savannah Detail",
     "notFound": "Dish Not Found"
   },
+  "ArticleDetail": {
+    "title": "Article",
+    "description": "Article Detail",
+    "notFound": "Article Not Found"
+  },
   "ErrorMessage": {
     "invalidEmail": "Invalid Email",
     "required": "This field  is required",
