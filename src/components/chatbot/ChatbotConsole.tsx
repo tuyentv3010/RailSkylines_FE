@@ -647,7 +647,7 @@ const ChatbotConsole = ({
         </aside>
         <section
           className={cn(
-            "flex flex-col overflow-hidden rounded-lg border bg-background",
+            "flex flex-col overflow-hidden rounded-lg border bg-background h-[700px]",
             "flex-1 min-h-0",
             panelHeightClass
           )}
@@ -693,8 +693,8 @@ const ChatbotConsole = ({
             className="flex-1 min-h-0 space-y-4 overflow-y-auto px-4 py-4 text-sm"
           >
             {activeConversation.messages.length === 0 ? (
-              <div className="flex h-full flex-col items-center justify-center gap-2 text-center text-muted-foreground">
-                <MessageCircle className="h-10 w-10" />
+              <div className="flex flex-col items-center justify-center gap-2 text-center text-muted-foreground">
+                <MessageCircle className="h-10 w-10" />   
                 <p className="max-w-sm text-sm">
                   Start by asking about articles, promotions, or just say hi. I
                   will search the knowledge base and stream responses instantly.
