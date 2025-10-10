@@ -576,7 +576,7 @@ const ChatbotConsole = ({
 
   return (
     <Container className={rootClassName}>
-      <div className="flex h-full w-full flex-col gap-4 xl:flex-row">
+      <div className="flex h-full w-full flex-col gap-4 xl:flex-row max-h-[580px]">
         <aside
           className={cn(
             "flex flex-col overflow-hidden rounded-lg border bg-background",
@@ -647,7 +647,7 @@ const ChatbotConsole = ({
         </aside>
         <section
           className={cn(
-            "flex flex-col overflow-hidden rounded-lg border bg-background h-[700px]",
+            "flex flex-col overflow-hidden rounded-lg border bg-background h-full",
             "flex-1 min-h-0",
             panelHeightClass
           )}
