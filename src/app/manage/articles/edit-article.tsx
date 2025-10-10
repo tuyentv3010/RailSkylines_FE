@@ -153,7 +153,7 @@ export default function EditArticle({
                       </Label>
                       <div className="col-span-3 w-full space-y-2 ">
                         <Editor
-                          apiKey="2ago0pjy5jsyi0eajfrx6ftefx6f8u2zvv2uubbi0m3dp3xo" // Thay bằng API Key của TinyMCE nếu cần
+                          apiKey="zb9ne0kag6qmj7bdngggcylyum72gf57d8bnkstmrtcjc4zv" // Thay bằng API Key của TinyMCE nếu cần
                           onInit={(evt, editor) => (editorRef.current = editor)}
                           value={field.value}
                           onEditorChange={(content) => field.onChange(content)}
