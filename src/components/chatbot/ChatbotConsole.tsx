@@ -748,59 +748,7 @@ const ChatbotConsole = ({
               })
             )}
           </div>
-          {activeConversation.sources.length > 0 && (
-            <div className="flex-shrink-0 border-t bg-muted/40 px-4 py-3 max-h-64 overflow-y-auto">
-              <div className="mb-2 flex items-center gap-2">
-                <span className="text-sm font-semibold">Suggested sources</span>
-                {activeConversation.route && (
-                  <Badge
-                    variant="outline"
-                    className="text-xs uppercase tracking-wide"
-                  >
-                    {activeConversation.route}
-                  </Badge>
-                )}
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {activeConversation.sources.map((source) => (
-                  <article
-                    key={`${source.articleId}-${source.title}`}
-                    className="flex flex-col gap-2 rounded-md border bg-background p-3 text-xs"
-                  >
-                    <div className="font-semibold text-sm">{source.title}</div>
-                    {source.thumbnail ? (
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <button className="group relative h-32 overflow-hidden rounded-md border bg-muted">
-                            <img
-                              src={source.thumbnail}
-                              alt={source.title}
-                              className="h-full w-full object-cover transition-transform group-hover:scale-[1.02]"
-                            />
-                          </button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-3xl overflow-hidden p-0">
-                          <img
-                            src={source.thumbnail}
-                            alt={source.title}
-                            className="h-full w-full object-contain"
-                          />
-                        </DialogContent>
-                      </Dialog>
-                    ) : null}
-                    {source.preview && (
-                      <p className="line-clamp-3 text-muted-foreground">
-                        {source.preview}
-                      </p>
-                    )}
-                    <div className="text-muted-foreground">
-                      Match score: {source.score.toFixed(2)}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          )}
+         
           <footer className="flex-shrink-0 border-t px-4 py-3">
             <form onSubmit={onSubmit} className="flex flex-col gap-2">
               <Textarea
