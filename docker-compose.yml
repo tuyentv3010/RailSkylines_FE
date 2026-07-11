@@ -1,0 +1,9 @@
+# Build + push FE image. Giá trị NEXT_PUBLIC_* nằm trong .env.production (Next tự đọc lúc build).
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tuyentvwork/railskylines-fe:latest
+    ports:
+      - "3000:3000"
