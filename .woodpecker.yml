@@ -1,0 +1,16 @@
+when:
+  - event: tag        # chỉ build khi push TAG (giống BE)
+
+steps:
+  build-push:
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      repo: tuyentvwork/railskylines-fe
+      # FE nhúng NEXT_PUBLIC_* lúc `next build` từ .env.production (đã commit trong repo).
+      tags:
+        - ${CI_COMMIT_TAG}    # image tag = tên git tag
+        - latest
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password

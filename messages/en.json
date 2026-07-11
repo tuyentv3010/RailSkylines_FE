@@ -465,6 +465,7 @@
     "All": "All"
   },
   "DropdownAvatar": {
+    "Manage": "Manage",
     "Settings": "Setting",
     "LoggedOut": "LoggedOut",
     "UnknownUser": "UnknownUser",

@@ -128,6 +128,15 @@ export default function DropdownAvatar() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        {["SUPER_ADMIN", "ADMIN", "STAFF"].includes(
+          account?.role?.name ?? ""
+        ) && (
+          <DropdownMenuItem asChild>
+            <Link href="/manage/dashboard" className="cursor-pointer">
+              {t("Manage")}
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
           <Link href="/manage/setting" className="cursor-pointer">
             {t("Settings")}

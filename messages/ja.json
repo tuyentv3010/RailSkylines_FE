@@ -458,6 +458,7 @@
     "All": "すべて"
   },
   "DropdownAvatar": {
+    "Manage": "管理",
     "Settings": "設定",
     "LoggedOut": "ログアウト済み",
     "UnknownUser": "不明なユーザー",
