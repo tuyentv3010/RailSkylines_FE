@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: tuyentvwork/railskylines-fe:v1.0.7
+    image: tuyentvwork/railskylines-fe:v1.0.8
     restart: unless-stopped
     networks:
       - proxy
