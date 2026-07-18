@@ -1,4 +1,24 @@
 {
+  "PromotionPage": {
+    "title": "Promotions",
+    "subtitle": "Attractive promotions from RailSkyLines",
+    "code": "Promotion code",
+    "discount": "Discount",
+    "startDate": "Start date",
+    "validUntil": "Valid until",
+    "empty": "No promotions available at the moment",
+    "loadError": "Failed to load promotions",
+    "copy": "Copy code",
+    "copied": "Copied!"
+  },
+  "BlogPage": {
+    "title": "Blog",
+    "subtitle": "Latest news and articles from RailSkyLines",
+    "readMore": "Read more",
+    "empty": "No articles yet",
+    "loadError": "Failed to load articles",
+    "by": "By"
+  },
   "HomePage": {
     "title": "RailSkyLines !",
     "description": "Easy ticket booking, smooth journey!",

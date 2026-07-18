@@ -1,4 +1,24 @@
 {
+  "PromotionPage": {
+    "title": "プロモーション",
+    "subtitle": "RailSkyLinesの魅力的なプロモーション",
+    "code": "プロモーションコード",
+    "discount": "割引",
+    "startDate": "開始日",
+    "validUntil": "有効期限",
+    "empty": "現在プロモーションはありません",
+    "loadError": "プロモーションの読み込みに失敗しました",
+    "copy": "コードをコピー",
+    "copied": "コピーしました！"
+  },
+  "BlogPage": {
+    "title": "ブログ",
+    "subtitle": "RailSkyLinesの最新ニュースと記事",
+    "readMore": "続きを読む",
+    "empty": "記事はまだありません",
+    "loadError": "記事の読み込みに失敗しました",
+    "by": "投稿者"
+  },
   "HomePage": {
     "title": "レールスカイラインズ！",
     "description": "簡単なチケット予約、スムーズな旅！",

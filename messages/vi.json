@@ -1,4 +1,24 @@
 {
+  "PromotionPage": {
+    "title": "Khuyến mãi",
+    "subtitle": "Các chương trình khuyến mãi hấp dẫn từ RailSkyLines",
+    "code": "Mã khuyến mãi",
+    "discount": "Giảm giá",
+    "startDate": "Ngày bắt đầu",
+    "validUntil": "Ngày hết hạn",
+    "empty": "Hiện chưa có khuyến mãi nào",
+    "loadError": "Tải khuyến mãi thất bại",
+    "copy": "Sao chép mã",
+    "copied": "Đã sao chép!"
+  },
+  "BlogPage": {
+    "title": "Blog",
+    "subtitle": "Tin tức và bài viết mới nhất từ RailSkyLines",
+    "readMore": "Đọc tiếp",
+    "empty": "Chưa có bài viết nào",
+    "loadError": "Tải bài viết thất bại",
+    "by": "Bởi"
+  },
   "HomePage": {
     "title": "RailSkyLines !",
     "description": "Đặt vé dễ dàng, hành trình suôn sẻ!",

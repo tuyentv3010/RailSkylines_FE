@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGetArticle, useUpdateArticleMutation } from "@/queries/useArticle";
@@ -30,8 +30,8 @@ import {
 } from "@/schemaValidations/article.schema";
 import { useToast } from "@/components/ui/use-toast";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { Label } from "recharts";
-import { Editor } from "@tinymce/tinymce-react";
+import { Label } from "@/components/ui/label";
+import RichTextEditor from "@/components/rich-text-editor";
 // Socket removed: using backend-triggered Pusher events
 
 type EditArticleProps = {
@@ -142,43 +142,20 @@ export default function EditArticle({
             <FormField
               control={form.control}
               name="content"
-              render={({ field }) => {
-                const editorRef = useRef<any>(null);
-
-                return (
-                  <FormItem>
-                    <div className="grid grid-cols-2 items-center justify-items-start gap-4">
-                      <Label className="text-sm font-medium w-20">
-                        Content
-                      </Label>
-                      <div className="col-span-3 w-full space-y-2 ">
-                        <Editor
-                          apiKey="zb9ne0kag6qmj7bdngggcylyum72gf57d8bnkstmrtcjc4zv" // Thay bằng API Key của TinyMCE nếu cần
-                          onInit={(evt, editor) => (editorRef.current = editor)}
-                          value={field.value}
-                          onEditorChange={(content) => field.onChange(content)}
-                          init={{
-                            height: 500,
-                            menubar: true,
-                            plugins: [
-                              "advlist autolink lists link image charmap print preview anchor",
-                              "searchreplace visualblocks code fullscreen",
-                              "insertdatetime media table paste code help wordcount",
-                            ],
-                            toolbar:
-                              "undo redo | formatselect | bold italic backcolor | " +
-                              "alignleft aligncenter alignright alignjustify | " +
-                              "bullist numlist outdent indent | removeformat | help",
-                            content_style:
-                              "body { font-family:Arial,sans-serif; font-size:14px }",
-                          }}
-                        />
-                        <FormMessage />
-                      </div>
+              render={({ field }) => (
+                <FormItem>
+                  <div className="grid grid-cols-2 items-center justify-items-start gap-4">
+                    <Label className="text-sm font-medium w-20">Content</Label>
+                    <div className="col-span-3 w-full space-y-2 ">
+                      <RichTextEditor
+                        value={field.value ?? ""}
+                        onChange={field.onChange}
+                      />
+                      <FormMessage />
                     </div>
-                  </FormItem>
-                );
-              }}
+                  </div>
+                </FormItem>
+              )}
             />
             <FormField
               control={form.control}
