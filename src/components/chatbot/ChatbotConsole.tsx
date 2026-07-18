@@ -5,14 +5,14 @@ import { ChatConversation, ChatMessage, ChatSource } from "@/types/chatbot";
 import envConfig from "@/config";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import {
   Loader2,
   MessageCircle,
+  Plus,
   RotateCw,
   Send,
+  Sparkles,
   Square,
   Trash2,
 } from "lucide-react";
@@ -566,37 +566,49 @@ const ChatbotConsole = ({
   if (!hydrated || !activeConversation) {
     return (
       <main className="flex flex-1 flex-col items-center justify-center p-4">
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <Loader2 className="h-4 w-4 animate-spin" />
-          <span>Loading chatbot workspace...</span>
+        <div className="flex items-center gap-2 text-[#6E6E66] dark:text-[#A8A79E]">
+          <Loader2 className="h-4 w-4 animate-spin text-[#D97757]" />
+          <span className="text-sm">Đang tải trợ lý...</span>
         </div>
       </main>
     );
   }
 
+  const showHeader =
+    variant === "page" ||
+    Boolean(isStreaming) ||
+    Boolean(activeConversation.route) ||
+    canRegenerate;
+
   return (
     <Container className={rootClassName}>
       <div className="flex h-full w-full flex-col gap-4 xl:flex-row max-h-[580px]">
+        {/* Sessions sidebar */}
         <aside
           className={cn(
-            "flex flex-col overflow-hidden rounded-lg border bg-background",
-            "xl:w-[300px]",
+            "flex flex-col overflow-hidden rounded-2xl border border-[#EDEAE0] bg-[#F5F4EE] dark:border-[#3A3936] dark:bg-[#1F1E1D]",
+            "xl:w-[280px]",
             panelHeightClass
           )}
         >
-          <div className="flex items-center justify-between border-b px-4 py-3">
-            <div className="flex items-center gap-2 text-sm font-semibold">
-              <MessageCircle className="h-4 w-4" />
-              Sessions
+          <div className="flex items-center justify-between border-b border-[#EDEAE0] px-4 py-3 dark:border-[#3A3936]">
+            <div className="flex items-center gap-2 text-sm font-semibold text-[#2A2A28] dark:text-[#F5F4EE]">
+              <MessageCircle className="h-4 w-4 text-[#D97757]" />
+              Trò chuyện
             </div>
-            <Button size="sm" onClick={handleNewConversation}>
-              New
+            <Button
+              size="sm"
+              onClick={handleNewConversation}
+              className="h-8 gap-1 rounded-full bg-[#D97757] px-3 text-white shadow-sm hover:bg-[#C15F3C]"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              Mới
             </Button>
           </div>
           <div className="flex-1 overflow-y-auto">
             {conversations.length === 0 ? (
-              <div className="flex h-full items-center justify-center px-4 text-sm text-muted-foreground">
-                No conversations yet.
+              <div className="flex h-full items-center justify-center px-4 text-sm text-[#6E6E66] dark:text-[#A8A79E]">
+                Chưa có cuộc trò chuyện nào.
               </div>
             ) : (
               <ul className="space-y-1 px-2 py-3">
@@ -607,10 +619,10 @@ const ChatbotConsole = ({
                       <button
                         type="button"
                         className={cn(
-                          "flex w-full items-center justify-between gap-3 rounded-md px-3 py-2 text-left text-sm transition",
+                          "flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-left text-sm transition-colors",
                           isActive
-                            ? "bg-primary/10 text-primary"
-                            : "hover:bg-muted"
+                            ? "bg-[#D97757]/15 text-[#C15F3C] dark:bg-[#D97757]/25 dark:text-[#E8896B]"
+                            : "text-[#3D3D3A] hover:bg-[#EAE8DF] dark:text-[#C9C8BF] dark:hover:bg-[#302F2C]"
                         )}
                         onClick={() =>
                           handleSelectConversation(conversation.id)
@@ -619,18 +631,18 @@ const ChatbotConsole = ({
                         <span className="line-clamp-1 font-medium">
                           {conversation.title || DEFAULT_TITLE}
                         </span>
-                        <button
-                          type="button"
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
+                        <span
+                          role="button"
+                          tabIndex={0}
+                          className="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg text-[#9A9A90] transition-colors hover:bg-black/5 hover:text-[#C15F3C] dark:hover:bg-white/10"
                           onClick={(event) => {
                             event.stopPropagation();
                             handleDeleteConversation(conversation.id);
                           }}
-                          disabled={conversations.length <= 1}
-                          aria-label="Delete conversation"
+                          aria-label="Xóa cuộc trò chuyện"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
-                        </button>
+                        </span>
                       </button>
                     </li>
                   );
@@ -638,66 +650,85 @@ const ChatbotConsole = ({
               </ul>
             )}
           </div>
-          <div className="flex items-center justify-between border-t px-4 py-3 text-xs text-muted-foreground">
-            <span>{conversations.length} session(s)</span>
-            <Button variant="outline" size="sm" onClick={handleClearHistory}>
-              Clear all
+          <div className="flex items-center justify-between border-t border-[#EDEAE0] px-4 py-3 text-xs text-[#6E6E66] dark:border-[#3A3936] dark:text-[#A8A79E]">
+            <span>{conversations.length} phiên</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleClearHistory}
+              className="h-7 rounded-full border-[#E0DDD2] bg-transparent text-[#6E6E66] hover:bg-[#EAE8DF] hover:text-[#C15F3C] dark:border-[#3A3936] dark:text-[#A8A79E] dark:hover:bg-[#302F2C]"
+            >
+              Xóa hết
             </Button>
           </div>
         </aside>
+
+        {/* Chat panel */}
         <section
           className={cn(
-            "flex flex-col overflow-hidden rounded-lg border bg-background h-full",
+            "flex flex-col overflow-hidden rounded-2xl border border-[#EDEAE0] bg-white dark:border-[#3A3936] dark:bg-[#262624] h-full",
             "flex-1 min-h-0",
             panelHeightClass
           )}
         >
-          <header className="flex-shrink-0 flex items-center justify-between border-b px-4 py-3">
-            <div>
-              <h1 className="text-base font-semibold">RailSkylines Copilot</h1>
-              <p className="text-xs text-muted-foreground">
-                {isStreaming
-                  ? "Generating response�"
-                  : activeConversation.route
-                  ? `Semantic route: ${activeConversation.route}`
-                  : "Ask about articles or just chat�I'll route for you."}
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              {canRegenerate && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleRegenerate}
-                  className="gap-1"
-                >
-                  <RotateCw className="h-3.5 w-3.5" />
-                  Retry
-                </Button>
-              )}
-              {isStreaming ? (
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={handleStop}
-                  className="gap-1"
-                >
-                  <Square className="h-3.5 w-3.5" />
-                  Stop
-                </Button>
-              ) : null}
-            </div>
-          </header>
+          {showHeader && (
+            <header className="flex-shrink-0 flex items-center justify-between gap-2 border-b border-[#EDEAE0] px-4 py-2.5 dark:border-[#3A3936]">
+              <div className="min-w-0">
+                {variant === "page" && (
+                  <h1 className="text-sm font-semibold text-[#2A2A28] dark:text-[#F5F4EE]">
+                    RailSkylines Copilot
+                  </h1>
+                )}
+                <p className="truncate text-xs text-[#6E6E66] dark:text-[#A8A79E]">
+                  {isStreaming ? (
+                    <span className="inline-flex items-center gap-1.5 text-[#C15F3C] dark:text-[#E8896B]">
+                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#D97757]" />
+                      Đang trả lời...
+                    </span>
+                  ) : activeConversation.route ? (
+                    `Định tuyến: ${activeConversation.route}`
+                  ) : (
+                    "Hỏi về bài viết hoặc trò chuyện — tôi sẽ tự định tuyến."
+                  )}
+                </p>
+              </div>
+              <div className="flex flex-shrink-0 items-center gap-2">
+                {canRegenerate && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleRegenerate}
+                    className="h-8 gap-1 rounded-full border-[#E0DDD2] text-[#6E6E66] hover:bg-[#F5F4EE] hover:text-[#C15F3C] dark:border-[#3A3936] dark:text-[#A8A79E] dark:hover:bg-[#302F2C]"
+                  >
+                    <RotateCw className="h-3.5 w-3.5" />
+                    Thử lại
+                  </Button>
+                )}
+                {isStreaming ? (
+                  <Button
+                    size="sm"
+                    onClick={handleStop}
+                    className="h-8 gap-1 rounded-full bg-[#D97757] text-white hover:bg-[#C15F3C]"
+                  >
+                    <Square className="h-3.5 w-3.5" />
+                    Dừng
+                  </Button>
+                ) : null}
+              </div>
+            </header>
+          )}
           <div
             ref={chatContainerRef}
-            className="flex-1 min-h-0 space-y-4 overflow-y-auto px-4 py-4 text-sm"
+            className="flex-1 min-h-0 space-y-5 overflow-y-auto px-4 py-5 text-sm"
           >
             {activeConversation.messages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center gap-2 text-center text-muted-foreground">
-                <MessageCircle className="h-10 w-10" />   
-                <p className="max-w-sm text-sm">
-                  Start by asking about articles, promotions, or just say hi. I
-                  will search the knowledge base and stream responses instantly.
+              <div className="flex h-full flex-col items-center justify-center gap-3 text-center">
+                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#D97757]/12 text-[#D97757] dark:bg-[#D97757]/20">
+                  <Sparkles className="h-7 w-7" />
+                </span>
+                <p className="max-w-sm text-sm text-[#6E6E66] dark:text-[#A8A79E]">
+                  Bắt đầu bằng cách hỏi về bài viết, khuyến mãi, hoặc chỉ cần
+                  chào một câu. Tôi sẽ tìm trong kho tri thức và trả lời ngay.
                 </p>
               </div>
             ) : (
@@ -707,10 +738,15 @@ const ChatbotConsole = ({
                   <div
                     key={message.id}
                     className={cn(
-                      "flex w-full",
+                      "flex w-full items-end gap-2",
                       isUser ? "justify-end" : "justify-start"
                     )}
                   >
+                    {!isUser && (
+                      <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[#D97757] text-white">
+                        <Sparkles className="h-3.5 w-3.5" />
+                      </span>
+                    )}
                     <div
                       className={cn(
                         "flex max-w-[80%] flex-col gap-1",
@@ -719,27 +755,32 @@ const ChatbotConsole = ({
                     >
                       <div
                         className={cn(
-                          "whitespace-pre-wrap break-words rounded-2xl px-4 py-2",
+                          "whitespace-pre-wrap break-words rounded-2xl px-4 py-2.5 leading-relaxed shadow-sm",
                           isUser
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted"
+                            ? "rounded-br-md bg-[#D97757] text-white"
+                            : "rounded-bl-md border border-[#EDEAE0] bg-[#F5F4EE] text-[#2A2A28] dark:border-[#3A3936] dark:bg-[#302F2C] dark:text-[#F5F4EE]"
                         )}
                       >
-                        {message.content || (message.pending ? "..." : "")}
-                        {message.pending && (
-                          <span className="ml-1 inline-block animate-pulse">
-                            |
-                          </span>
-                        )}
+                        {message.content}
+                        {message.pending &&
+                          (message.content ? (
+                            <span className="ml-0.5 inline-block h-3.5 w-[2px] animate-pulse bg-current align-middle" />
+                          ) : (
+                            <span className="inline-flex items-center gap-1 py-1">
+                              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.3s]" />
+                              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current [animation-delay:-0.15s]" />
+                              <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-current" />
+                            </span>
+                          ))}
                       </div>
                       {!isUser && message.error && (
-                        <span className="text-xs text-destructive">
+                        <span className="text-xs text-red-500">
                           {message.error}
                         </span>
                       )}
                       {!isUser && message.interrupted && !message.error && (
-                        <span className="text-xs text-muted-foreground">
-                          Generation paused.
+                        <span className="text-xs text-[#9A9A90]">
+                          Đã tạm dừng.
                         </span>
                       )}
                     </div>
@@ -748,37 +789,35 @@ const ChatbotConsole = ({
               })
             )}
           </div>
-         
-          <footer className="flex-shrink-0 border-t px-4 py-3">
-            <form onSubmit={onSubmit} className="flex flex-col gap-2">
-              <Textarea
-                value={input}
-                onChange={(event) => setInput(event.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask anything about RailSkylines articles..."
-                rows={3}
-                className="resize-none"
-              />
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>Press Shift + Enter for a new line</span>
-                <div className="flex items-center gap-2">
-                  {isStreaming && (
-                    <Badge variant="outline" className="gap-1">
-                      <Loader2 className="h-3 w-3 animate-spin" />
-                      Streaming
-                    </Badge>
+
+          <footer className="flex-shrink-0 border-t border-[#EDEAE0] px-4 py-3 dark:border-[#3A3936]">
+            <form onSubmit={onSubmit} className="flex flex-col gap-1.5">
+              <div className="flex items-end gap-2 rounded-2xl border border-[#E5E2D7] bg-[#FAF9F5] px-3 py-2 transition-colors focus-within:border-[#D97757] dark:border-[#3A3936] dark:bg-[#1F1E1D]">
+                <Textarea
+                  value={input}
+                  onChange={(event) => setInput(event.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Hỏi bất cứ điều gì về RailSkylines..."
+                  rows={2}
+                  className="min-h-0 resize-none border-0 bg-transparent p-0 text-sm shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:text-[#F5F4EE]"
+                />
+                <Button
+                  type="submit"
+                  size="icon"
+                  disabled={!input.trim() || Boolean(isStreaming)}
+                  className="h-9 w-9 flex-shrink-0 rounded-full bg-[#D97757] text-white hover:bg-[#C15F3C] disabled:opacity-40"
+                  aria-label="Gửi"
+                >
+                  {isStreaming ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
                   )}
-                  <Button
-                    type="submit"
-                    size="sm"
-                    disabled={!input.trim() || Boolean(isStreaming)}
-                    className="gap-1"
-                  >
-                    <Send className="h-3.5 w-3.5" />
-                    Send
-                  </Button>
-                </div>
+                </Button>
               </div>
+              <span className="px-1 text-[11px] text-[#9A9A90] dark:text-[#77766E]">
+                Nhấn Shift + Enter để xuống dòng
+              </span>
             </form>
           </footer>
         </section>
