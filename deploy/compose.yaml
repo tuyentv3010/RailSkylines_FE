@@ -1,0 +1,15 @@
+services:
+  frontend:
+    image: tuyentvwork/railskylines-fe:v1.0.4
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.railskylines-fe.rule=Host(`railskylines.inova.id.vn`)"
+      - "traefik.http.routers.railskylines-fe.entrypoints=websecure"
+      - "traefik.http.routers.railskylines-fe.tls=true"
+      - "traefik.http.services.railskylines-fe.loadbalancer.server.port=3000"
+networks:
+  proxy:
+    external: true

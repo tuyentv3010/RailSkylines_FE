@@ -15,18 +15,20 @@ steps:
       password:
         from_secret: docker_password
 
-  # CD: SSH vao VPS, keo image moi + dung lai container (force-recreate cho chac).
-  # Chay sau khi build-push thanh cong.
-  deploy:
-    image: appleboy/drone-ssh
-    settings:
-      host:
-        from_secret: ssh_host
-      username:
-        from_secret: ssh_user
-      key:
-        from_secret: ssh_key
-      port: 22
-      command_timeout: 10m
-      script:
-        - cd /etc/komodo/stacks/railskylines-fe && docker compose pull && docker compose up -d --force-recreate
+  # GitOps CD: bump the image tag in deploy/compose.yaml to this release tag,
+  # then commit & push to the branch Komodo watches. Komodo redeploys on the git
+  # change; the changed tag makes compose recreate the container (no --force needed).
+  bump-deploy:
+    image: alpine/git
+    environment:
+      GIT_TOKEN:
+        from_secret: git_token
+    commands:
+      - git config --global user.email "ci@railskylines.local"
+      - git config --global user.name "woodpecker-ci"
+      - git fetch origin TuyenTV_Deploy
+      - git checkout -B TuyenTV_Deploy origin/TuyenTV_Deploy
+      - sed -i "s|railskylines-fe:.*|railskylines-fe:${CI_COMMIT_TAG}|" deploy/compose.yaml
+      - git add deploy/compose.yaml
+      - git commit -m "deploy(fe) ${CI_COMMIT_TAG}" || echo "nothing to commit"
+      - git push https://$${GIT_TOKEN}@github.com/tuyentv3010/RailSkylines_FE.git HEAD:TuyenTV_Deploy
