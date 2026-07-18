@@ -2,6 +2,7 @@
 
 import { Label } from "@/components/ui/label";
 import RichTextEditor from "@/components/rich-text-editor";
+import ImageUpload from "@/components/image-upload";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -132,7 +133,11 @@ export default function AddArticle() {
                 <FormItem>
                   <FormLabel>{t("Thumbnail")}</FormLabel>
                   <FormControl>
-                    <Input id="thumbnail" {...field} />
+                    <ImageUpload
+                      value={field.value ?? ""}
+                      onChange={field.onChange}
+                      folder="articles"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

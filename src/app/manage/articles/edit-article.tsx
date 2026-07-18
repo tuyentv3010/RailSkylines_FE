@@ -32,6 +32,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Label } from "@/components/ui/label";
 import RichTextEditor from "@/components/rich-text-editor";
+import ImageUpload from "@/components/image-upload";
 // Socket removed: using backend-triggered Pusher events
 
 type EditArticleProps = {
@@ -164,7 +165,11 @@ export default function EditArticle({
                 <FormItem>
                   <FormLabel>{t("Thumbnail")}</FormLabel>
                   <FormControl>
-                    <Input id="thumbnail" {...field} />
+                    <ImageUpload
+                      value={field.value ?? ""}
+                      onChange={field.onChange}
+                      folder="articles"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
